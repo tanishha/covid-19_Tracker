@@ -1,7 +1,29 @@
 import React, { Component } from 'react'
 import "./cards.component.css"
-
+import http from '../../util/index'
+import Util from '../../util/moment'
 export class CardsComponent extends Component {
+    constructor() {
+        super();
+        this.state = {
+          confirmed: "",
+          recovered:"",
+          deaths:"",
+        };
+      }
+      componentDidMount() {
+        http
+          .GET("/api")
+          .then((response) => {
+            this.setState({
+              confirmed: response.data.confirmed.value,
+              deaths:response.data.deaths.value,
+              recovered:response.data.recovered.value
+            });
+          })
+          .catch((err) => {
+console.log(err)          });
+      }
     render() {
         return (
             <div>
@@ -16,13 +38,13 @@ export class CardsComponent extends Component {
   </div>
  
   <div className="main-area-k">
-  <h1 >100</h1>
+  <h1 >{this.state.confirmed}</h1>
 
   </div>
   
   <div className="bottom-number-container">
     <p>
-      Date
+    {Util.formatDate()}
     </p>
   </div>
 </div>
@@ -34,12 +56,12 @@ export class CardsComponent extends Component {
   </div>
  
   <div className="main-area-q">
-  <h1 >100</h1>
+  <h1 >{this.state.recovered}</h1>
   </div>
   
   <div className="bottom-number-container">
     <p>
-      Date
+       {Util.formatDate()}
     </p>
   </div>
 </div>
@@ -52,13 +74,13 @@ export class CardsComponent extends Component {
 
   <div className="main-area-j">
       <h1>
-        100
+       {this.state.deaths}
       </h1>
   </div>
  
   <div className="bottom-number-container">
     <p>
-      Date
+       {Util.formatDate()}
     </p>
   </div>
 </div>
