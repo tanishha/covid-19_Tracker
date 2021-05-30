@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./cards.component.css";
 import http from "../../util/index";
 import Util from "../../util/moment";
+import notification from "../../util/notification";
 import { CountryComponent } from "../countryComponent/country.component";
 export class CardsComponent extends Component {
   constructor() {
@@ -10,14 +11,17 @@ export class CardsComponent extends Component {
       confirmed: "",
       recovered: "",
       deaths: "",
+      confirmedcountry: "",
+      recoveredcountry: "",
+      deathscountry: "",
+      countryvalue: true,
     };
   }
   componentDidMount() {
-    console.log("props,", this.props);
-
     http
       .GET("/api")
       .then((response) => {
+        notification.showSuccess("Stay Safe!!");
         this.setState({
           confirmed: response.data.confirmed.value,
           deaths: response.data.deaths.value,
@@ -29,18 +33,40 @@ export class CardsComponent extends Component {
       });
   }
 
-  countrydata = (data) => {
-        //eslint-disable-next-line no-restricted-globals
+  countrydata = (cntry) => {
+    http
+      .GET("/api/countries/" + cntry)
+      .then((response) => {
+        notification.showSuccess("Update of "+ cntry.toUpperCase()+"!!");
+        this.setState({
+          confirmedcountry: response.data.confirmed.value,
+          deathscountry: response.data.deaths.value,
+          recoveredcountry: response.data.recovered.value,
+          countryvalue: false,
+        });
+      })
+      .catch((err) => {
+        notification.showWarnings("Please Type Correctly!");
 
-    console.log("props reciebed as dta", data);
-
+        console.log(err);
+      });
+    console.log("darta becomes,", this.state.confirmedcountry);
   };
 
   render() {
-
+    let c = this.state.countryvalue
+      ? this.state.confirmed
+      : this.state.confirmedcountry;
+    let r = this.state.countryvalue
+      ? this.state.recovered
+      : this.state.recoveredcountry;
+    let d = this.state.countryvalue
+      ? this.state.deaths
+      : this.state.deathscountry;
     return (
       <div>
-        <CountryComponent title="Global"
+        <CountryComponent
+          title="Global"
           submitCallback={this.countrydata}
         ></CountryComponent>
         <div className="main-container">
@@ -50,7 +76,7 @@ export class CardsComponent extends Component {
             </div>
 
             <div className="main-area-k">
-              <h1>{this.state.confirmed}</h1>
+              <h1>{c}</h1>
             </div>
 
             <div className="bottom-number-container">
@@ -63,7 +89,7 @@ export class CardsComponent extends Component {
             </div>
 
             <div className="main-area-q">
-              <h1>{this.state.recovered}</h1>
+              <h1>{r}</h1>
             </div>
 
             <div className="bottom-number-container">
@@ -76,7 +102,7 @@ export class CardsComponent extends Component {
             </div>
 
             <div className="main-area-j">
-              <h1>{this.state.deaths}</h1>
+              <h1>{d}</h1>
             </div>
 
             <div className="bottom-number-container">
@@ -84,7 +110,6 @@ export class CardsComponent extends Component {
             </div>
           </div>
         </div>
-      
       </div>
     );
   }

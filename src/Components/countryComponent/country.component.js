@@ -1,59 +1,48 @@
 import React, { Component } from "react";
 import "./country.component.css";
-import http from "../../util/index";
-
 export class CountryComponent extends Component {
   constructor() {
     super();
     this.state = {
       countries: [],
-      country: "",
-      set:"",
+      data: {
+        country: "",
+      },
     };
   }
-  // componentDidMount() {
-  //   http
-  //     .GET("/api/countries")
-  //     .then((response) => {
-  //       this.setState({
-  //         countries: response.data.countries,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
   handleChange = (e) => {
-
-    this.setState({
-      country: e.target.value,
-    });
-
-    this.props.submitCallback(this.state.country);
-
-    console.log(this.state.country);
-
+    let { name, value } = e.target;
+    this.setState((pre) => ({
+      data: {
+        ...pre.data,
+        [name]: value,
+      },
+    }));
+  };
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.submitCallback(this.state.data.country);
+    console.log(this.state.data.country);
   };
   render() {
     return (
       <div>
-   <div className="container h-100">
-      <div className="d-flex justify-content-center h-100">
-        <div className="searchbar">
-          <input className="search_input" type="text" name="" placeholder="Search..."/>
-          <a href="#" className="search_icon"><i className="fas fa-search"></i></a>
+        <div className="search-container">
+          <form onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              placeholder="Search country"
+              name="country"
+              className="input"
+              value={this.state.data.country}
+              onChange={this.handleChange}
+              autoComplete="false"
+            />
+            <button type="submit" className="button">
+              <i className="fa fa-search"></i>
+            </button>
+          </form>
         </div>
-      </div>
-    </div>
-        {/* <select onChange={this.handleChange}>
-          <option value="">{this.props.title}</option>
-
-          {this.state.countries.map((item, i) => (
-            <option key={i}  value={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </select> */}
       </div>
     );
   }
