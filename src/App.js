@@ -12,7 +12,6 @@ export default class App extends Component {
        <BannerComponent></BannerComponent>
        <CardsComponent></CardsComponent>
        <ChartsComponent></ChartsComponent>
-       <CountryComponent></CountryComponent>  
       </div>
     );
   }
