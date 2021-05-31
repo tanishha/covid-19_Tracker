@@ -8,6 +8,7 @@ const http = axios.create({
 function GET(url) {
     return http.get(url);
 }
+// eslint-disable-next-line
 export default {
     GET,
 };

@@ -22,7 +22,6 @@ export class CountryComponent extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.submitCallback(this.state.data.country);
-    console.log(this.state.data.country);
   };
   render() {
     return (

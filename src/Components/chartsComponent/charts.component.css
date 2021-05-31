@@ -1,0 +1,11 @@
+.graph{
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 770px) {
+    .graph {
+    width: 100%;
+    }
+}

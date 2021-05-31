@@ -24,7 +24,7 @@ function handleError(error) {
     }
     toast.error(errMsg)
 }
-
+// eslint-disable-next-line
 export default {
     showSuccess,
     showInfo,
