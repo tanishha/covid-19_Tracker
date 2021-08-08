@@ -1,2 +1,2 @@
-COVID-19 Tracker
+COVID-19 Updater
 https://coronadt.herokuapp.com/
